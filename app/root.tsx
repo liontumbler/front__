@@ -8,7 +8,12 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import "./app.css";
+
+//import { obtener } from "./services/capura";
+//obtener()
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
