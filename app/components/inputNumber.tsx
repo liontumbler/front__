@@ -36,7 +36,7 @@ export default forwardRef(({ type, defaultValue, label, classNameInput, classNam
             } else if (min && typeof valor === 'number' && min > valor) {
                 return `el campo '${label}' es menor recuerde que el minimo es ${min}`
             } else {
-                console.log('validado', label);
+                //console.log('validado', label);
                 return true
             }
         } else if (type == 'text' || type == 'email' || type == 'password') {
@@ -51,12 +51,10 @@ export default forwardRef(({ type, defaultValue, label, classNameInput, classNam
                 if (type == 'email') {
                     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
                     if (!regex.test(valor as string)) {
-                        console.log('tttttt');
                         return `el campo '${label}' formato invalido`
                     }
                 }
-                console.log('ttt', label, typeof valor);
-                console.log('validado', label);
+                //console.log('validado', label);
                 return true
             }
         } 

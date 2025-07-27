@@ -23,8 +23,12 @@ class usuarioService extends service {
         }, serviceName.getGeo())
 
         if (res.code == 200) {
-            this.bearer = res.access_token
-            this.refreshTokenString = res.refresh_token
+            if (res.datos.access_token && res.datos.refresh_token) {
+                console.log('tokens', res.datos);
+                
+                localStorage.setItem('access_token', res.datos.access_token);
+                localStorage.setItem('refresh_token', res.datos.refresh_token);
+            }
         }
 
         return res;

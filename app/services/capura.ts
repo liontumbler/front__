@@ -52,7 +52,6 @@ class name {
     private async serviceApiBigdatacloudNet(latitud = null, longitud = null) {
         let response = await this.serviceExterna('https://api.bigdatacloud.net/data/reverse-geocode-client', 'GET')
         const responseIp = await this.serviceExterna('https://api.bigdatacloud.net/data/client-ip', 'GET')
-        //console.log('api.bigdatacloud')
 
         latitud ? response.latitude = latitud : null
         longitud ? response.longitude = longitud : null
@@ -63,7 +62,6 @@ class name {
     private async serviceIpapiCo(latitud = null, longitud = null) {
         let response = await this.serviceExterna('https://ipapi.co/json', 'GET')
         const [continente, ciudad] = response.timezone.split("/")
-        //console.log('ipapi')
 
         latitud ? response.latitude = latitud : null
         longitud ? response.longitude = longitud : null
@@ -74,7 +72,6 @@ class name {
     private async serviceApiMyIpIo(latitud = null, longitud = null) {
         let response = await this.serviceExterna('https://api.my-ip.io/v2/ip.json', 'GET')
         const [continente, ciudad] = response.timezone.split("/")
-        //console.log('api.my-ip')
 
         latitud ? response.lat = latitud : null
         longitud ? response.lon = longitud : null
@@ -100,7 +97,6 @@ class name {
         let [latitude, longitude] = response.loc.split(",")
         const [organizacion, pais] = response.loc.split(" - ")
         const [continente, ciudad] = response.timezone.split("/")
-        //console.log('ipinfo')
 
         latitud ? latitude = latitud : null
         longitud ? longitude = longitud : null

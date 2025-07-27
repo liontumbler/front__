@@ -155,11 +155,15 @@ export default forwardRef(({ configution = { headersTable: [] }, disabled = fals
     }
 
     const formatearaDDMMYYYY = (fechaString: string) => {
-        const fecha = new Date(fechaString);
-        const dia = String(fecha.getDate()).padStart(2, '0');
-        const mes = String(fecha.getMonth() + 1).padStart(2, '0');
-        const anio = fecha.getFullYear();
-        return `${dia}/${mes}/${anio}`;
+        if (fechaString) {
+            const fecha = new Date(fechaString);
+            const dia = String(fecha.getDate()).padStart(2, '0');
+            const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+            const anio = fecha.getFullYear();
+            return `${dia}/${mes}/${anio}`;
+        } else {
+            return 'Sin fecha';
+        }
     }
 
     const formatearaBoolean = (data: any) => {
