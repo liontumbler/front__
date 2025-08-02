@@ -8,6 +8,7 @@ interface modeloModal {
     component: any
     textBtnClose?: string
     textBtnOpen?: string
+    classDialog?: string
 }
 
 interface modelModal {
@@ -15,7 +16,7 @@ interface modelModal {
     hiden: Function
 }
 
-export default forwardRef(({ title = '', closeModal, continueModal, component, textBtnClose = 'Cancelar', textBtnOpen = 'Continuar' }: modeloModal, ref) => {
+export default forwardRef(({ title = '', closeModal, continueModal, component, textBtnClose = 'Cancelar', textBtnOpen = 'Continuar', classDialog }: modeloModal, ref) => {
 
     const [modalVisible, setModalVisible] = useState<string>('');
     const [dataModal, setDataModal] = useState<any>(null);
@@ -38,7 +39,7 @@ export default forwardRef(({ title = '', closeModal, continueModal, component, t
 
     return (
         <div className={`modal fade show ${modalVisible}`} style={{background: '#000000b8'}}>
-            <div className="modal-dialog">
+            <div className={`modal-dialog ${classDialog}`}>
                 <div className="modal-content">
                     <div className="modal-header">
                         <h1 className="modal-title fs-5">{title}</h1>

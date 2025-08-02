@@ -58,14 +58,14 @@ class service {
         if (res.code == 401) {
             const tokens = await this.refreshToken()
             console.log('refresh_token', tokens);
-            if (tokens && tokens.code == 200) {
-                localStorage.setItem('access_token', res.datos.access_token);
-                localStorage.setItem('refresh_token', res.datos.refresh_token);
-                return await this.service({ url, method, data })
-            } else {
-                localStorage.clear();
-                window.location.href = '/';
-            }
+            // if (tokens && tokens.code == 200) {
+            //     localStorage.setItem('access_token', res.datos.access_token);
+            //     localStorage.setItem('refresh_token', res.datos.refresh_token);
+            //     return await this.service({ url, method, data })
+            // } else {
+            //     localStorage.clear();
+            //     window.location.href = '/';
+            // }
         } else {
             return res;
         }

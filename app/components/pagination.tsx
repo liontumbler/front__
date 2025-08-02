@@ -1,6 +1,6 @@
 import { useRef, useState, forwardRef, useImperativeHandle } from 'react';
 import Input, {type modelInput} from "./Input";
-import Select from "./";
+import Select from "./Select";
 
 interface modeloPagination {
     totalPages: number

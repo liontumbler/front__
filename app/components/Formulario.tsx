@@ -1,9 +1,11 @@
 import { useState, forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
 import Input, { type modelInput } from "./Input";
-import Button from "./button";
-//import SelectReact from './SelectReact';
+import Button from "./Button";
+import SelectReact from './SelectReact';
 import { default as SelectNative, type modelSelect } from "./Select";
 import { validarCampos } from "../utils/utils";
+
+import Modal , {type modelModal} from "./Modal";
 
 type option = {
     label: string
@@ -27,14 +29,14 @@ type FormularioProps = {
     disabled: boolean
     cargando: boolean
     textBoton: string
-    sutmit: Function
+    sutmit?: Function
 };
 
 export default forwardRef(({ campos, disabled, cargando, textBoton, sutmit }: FormularioProps, ref) => {
-    //const [varCampos, setVarCampos] = useState<Array<any>>([]);
+    const [msg, setMsg] = useState<string | boolean>('');
     const col = 6
 
-    //let generico = useRef<modelInput | modelSelect | null>(null);
+    const refModalMsg = useRef<modelModal>(null)
     //let refCampos = useRef<Array<modelInput | modelSelect | null>>([]);
 
     const refCampos = campos.map((campo) => {
@@ -42,12 +44,16 @@ export default forwardRef(({ campos, disabled, cargando, textBoton, sutmit }: Fo
     });
 
     const formAction = () => {
-        console.log(refCampos, 'ref');
-
         let validar = validarCampos(refCampos)
         if (validar === true){
-            sutmit(getValues())
+            if (sutmit) {
+                sutmit(getValues())
+            } else {
+                return getValues()
+            }
         } else {
+            setMsg(validar)
+            refModalMsg.current?.show();
             console.error(validar)
         }
     }
@@ -92,20 +98,24 @@ export default forwardRef(({ campos, disabled, cargando, textBoton, sutmit }: Fo
             )
         } else if (campo.type == 'selectReact') {
             return (
-                // <SelectReact
-                //     ref={refCampos[key]}
-                //     id={campo.id} 
-                //     disabled={disabled}
-                //     label={campo.label}
-                //     options={campo.options ? campo.options : []}
-                // />
-                'hola'
+                <SelectReact
+                    ref={refCampos[key]}
+                    id={campo.id} 
+                    disabled={disabled}
+                    label={campo.label}
+                    options={campo.options ? campo.options : []}
+                />
             )
         }
     }
 
-    useImperativeHandle(ref, () => ({
+    const continueModal = () => {
+        console.log('hola');
+        refModalMsg.current?.hiden();
+    }
 
+    useImperativeHandle(ref, () => ({
+        formAction
     }));
 
     return (
@@ -119,14 +129,25 @@ export default forwardRef(({ campos, disabled, cargando, textBoton, sutmit }: Fo
                     )
                 })
             }
-            <div className="col-sm-12 mt-2">
-                <Button
-                    cargando={cargando}
-                    disabled={disabled}
-                    onClick={formAction}
-                    text={textBoton}
-                />
-            </div>
+            {
+                sutmit ? (
+                    <div className="col-sm-12 mt-2">
+                        <Button
+                            cargando={cargando}
+                            disabled={disabled}
+                            onClick={formAction}
+                            text={textBoton}
+                        />
+                    </div>
+                ) : null
+            }
+            
+            <Modal
+                classDialog="modal-dialog-centered"
+                continueModal={continueModal}
+                ref={refModalMsg}
+                component={msg}
+            />
         </div>
     );
 })

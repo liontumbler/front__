@@ -1,14 +1,19 @@
 import { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
-//import Select from 'react-select';
+import Select from 'react-select';
+type optionType = {
+    value: string | number 
+    label: string
+}
 
 type SelectProps = {
     valor?: any;
-    options: Array<{value: any, label: string}>
+    options: Array<optionType>
     onChange?: (value: any) => void
     disabled: boolean
     label?: string
     id: string
     defaultValue?: number | undefined | string 
+    cargando?: boolean
 };
 
 interface ModelSelect {
@@ -18,12 +23,12 @@ interface ModelSelect {
     setValue: Function
 }
 
-const SelectReact = forwardRef(({defaultValue = undefined, options, onChange, disabled, label, id }: SelectProps, ref) => {
-    useEffect(() => {
-        if (!defaultValue) {
-            setValor(options[0].value)
-        }
-    }, []);
+const SelectReact = forwardRef(({defaultValue = undefined, options, onChange, disabled, label, id, cargando }: SelectProps, ref) => {
+    // useEffect(() => {
+    //     if (!defaultValue) {
+    //         setValor(options[0].value)
+    //     }
+    // }, []);
     
     const [valor, setValor] = useState<number | undefined | string>(defaultValue);
 
@@ -68,19 +73,17 @@ const SelectReact = forwardRef(({defaultValue = undefined, options, onChange, di
                 label ? <label htmlFor={id} className="form-label">{label}</label> : null
             }
             {
-                // <Select
-                //     className="form-select"
-                //     classNamePrefix="select"
-                //     //defaultValue={colourOptions[0]}
-                //     isDisabled={disabled}
-                //     //isLoading={cargando}
-                //     isClearable={true}
-                //     isSearchable={true}
-                //     name={id}
-                //     id={id}
-                //     options={options}
-                //     onChange={handleChange}
-                // />
+                <Select<optionType, false>
+                    classNamePrefix="form-select"
+                    isDisabled={disabled}
+                    isLoading={cargando}
+                    isClearable={true}
+                    isSearchable={true}
+                    name={id}
+                    id={id}
+                    options={options}
+                    onChange={handleChange}
+                />
             }
         </div>
     );

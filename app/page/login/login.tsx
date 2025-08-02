@@ -9,7 +9,7 @@ import { useIsMobile, validarCampos } from "../../utils/utils";
 import { usuarioService } from "../../services/usuario/usuarioService";
 
 import Input, { type modelInput } from "../../components/Input";
-import Button from "../../components/button";
+import Button from "../../components/Button";
 
 export function Login() {
   const service = new usuarioService()

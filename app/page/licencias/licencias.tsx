@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 
 import Table from "../../components/Table";
 import Formulario from "../../components/Formulario";
-import Button from "../../components/button";
+import Button from "../../components/Button";
 import Modal, { type modelModal } from "../../components/Modal";
 
 import { licenciaService } from "../../services/licencia/licenciaService";
@@ -12,12 +12,18 @@ interface modelTable {
   cargarTooltip: Function
 }
 
+type modelForm = {
+  formAction: Function
+}
+
 export function Licencias() {
   useEffect(() => {
     cargarDatos()
   }, []);
 
   const refModalCrear = useRef<modelModal>(null)
+  const refForm = useRef<modelForm>(null)
+  
 
   const service = new licenciaService()
 
@@ -77,7 +83,7 @@ export function Licencias() {
   ]
 
   const crearLicencia = (data: any) => {
-    console.log(data.hola, 'data');
+    console.log(data, 'data');
     
   }
 
@@ -86,7 +92,9 @@ export function Licencias() {
   }
 
   const continueModal = () => {
-
+    const values = refForm.current?.formAction()
+    console.log('continueModal', values);
+    
   }
 
   const closeModal = () => {
@@ -100,12 +108,14 @@ export function Licencias() {
   return (
     <>
       <Modal
+        classDialog="modal-lg"
         continueModal={continueModal}
         closeModal={closeModal}
         ref={refModalCrear}
         component={
           <Formulario
-            sutmit={crearLicencia}
+            ref={refForm}
+            //sutmit={crearLicencia}
             campos={[
               {
                 id: 'hola',
