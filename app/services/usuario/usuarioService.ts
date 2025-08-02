@@ -24,11 +24,13 @@ class usuarioService extends service {
 
         if (res.code == 200) {
             if (res.datos.access_token && res.datos.refresh_token) {
-                console.log('tokens', res.datos);
+                console.log('loginService', res.datos);
                 
                 localStorage.setItem('access_token', res.datos.access_token);
                 localStorage.setItem('refresh_token', res.datos.refresh_token);
             }
+        } else {
+            localStorage.clear();
         }
 
         return res;

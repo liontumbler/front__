@@ -20,6 +20,7 @@ interface input {
 interface modelInput {
     validarCampo: Function
     value: Function
+    getId: Function
     setValue: Function
 }
 
@@ -30,11 +31,11 @@ export default forwardRef(({ type, defaultValue, label, classNameInput, classNam
     const validarCampo = () => {
         if (type == 'number') {
             if (!valor && valor != 0) {
-                return `el campo '${label}' esta vacio`
+                return `el campo '${label || placeholder || id}' esta vacio`
             } else if (max && typeof valor === 'number' && max < valor) {
-                return `el campo '${label}' es mayor recuerde que el maximo es ${max}`
+                return `el campo '${label || placeholder || id}' es mayor recuerde que el maximo es ${max}`
             } else if (min && typeof valor === 'number' && min > valor) {
-                return `el campo '${label}' es menor recuerde que el minimo es ${min}`
+                return `el campo '${label || placeholder || id}' es menor recuerde que el minimo es ${min}`
             } else {
                 //console.log('validado', label);
                 return true
@@ -42,27 +43,30 @@ export default forwardRef(({ type, defaultValue, label, classNameInput, classNam
         } else if (type == 'text' || type == 'email' || type == 'password') {
             const texto = valor?.toString().trim() ?? '';
             if (texto === '') {
-                return `el campo '${label}' esta vacio`
+                return `el campo '${label || placeholder || id}' esta vacio`
             } else if (maxLength && maxLength < texto.length) {
-                return `el campo '${label}' es mayor recuerde que el maximo es ${maxLength}`
+                return `el campo '${label || placeholder || id}' es mayor recuerde que el maximo es ${maxLength}`
             } else if (minLength && minLength > texto.length) {
-                return `el campo '${label}' es menor recuerde que el minimo es ${minLength}`
+                return `el campo '${label || placeholder || id}' es menor recuerde que el minimo es ${minLength}`
             } else {
                 if (type == 'email') {
                     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
                     if (!regex.test(valor as string)) {
-                        return `el campo '${label}' formato invalido`
+                        return `el campo '${label || placeholder || id}' formato invalido`
                     }
                 }
                 //console.log('validado', label);
                 return true
             }
         } 
-
     }
 
     const value = () => {
         return valor
+    }
+
+    const getId = () => {
+        return id
     }
 
     const setValue = (valor: number) => {
@@ -71,6 +75,7 @@ export default forwardRef(({ type, defaultValue, label, classNameInput, classNam
 
     useImperativeHandle(ref, () => ({
         validarCampo,
+        getId,
         value,
         setValue
     }));

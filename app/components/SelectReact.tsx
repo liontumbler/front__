@@ -1,4 +1,5 @@
-import React, { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
+import { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
+//import Select from 'react-select';
 
 type SelectProps = {
     valor?: any;
@@ -10,14 +11,14 @@ type SelectProps = {
     defaultValue?: number | undefined | string 
 };
 
-interface modelSelect {
+interface ModelSelect {
     validarCampo: Function
     value: Function
     getId: Function
     setValue: Function
 }
 
-export default forwardRef(({defaultValue = undefined, options, onChange, disabled, label, id }: SelectProps, ref) => {
+const SelectReact = forwardRef(({defaultValue = undefined, options, onChange, disabled, label, id }: SelectProps, ref) => {
     useEffect(() => {
         if (!defaultValue) {
             setValor(options[0].value)
@@ -26,8 +27,12 @@ export default forwardRef(({defaultValue = undefined, options, onChange, disable
     
     const [valor, setValor] = useState<number | undefined | string>(defaultValue);
 
-    const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        onChange ? onChange(event.target.value) : setValue(event.target.value as any)
+    const handleChange = (option: any) => {
+        const value = option ? option.value : null;
+        setValor(value);
+        if (onChange) {
+            onChange(value);
+        }
     };
 
     const value = () => {
@@ -63,18 +68,23 @@ export default forwardRef(({defaultValue = undefined, options, onChange, disable
                 label ? <label htmlFor={id} className="form-label">{label}</label> : null
             }
             {
-                <select className="form-select" value={valor} onChange={handleChange} disabled={disabled}>
-                    {
-                        options.map((item, key) => {
-                            return (
-                                <option key={key} value={item.value}>{item.label}</option>
-                            )
-                        })
-                    }
-                </select>
+                // <Select
+                //     className="form-select"
+                //     classNamePrefix="select"
+                //     //defaultValue={colourOptions[0]}
+                //     isDisabled={disabled}
+                //     //isLoading={cargando}
+                //     isClearable={true}
+                //     isSearchable={true}
+                //     name={id}
+                //     id={id}
+                //     options={options}
+                //     onChange={handleChange}
+                // />
             }
         </div>
     );
 })
 
-export { type modelSelect } 
+export default SelectReact;
+export type { ModelSelect };

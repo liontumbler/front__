@@ -2,8 +2,8 @@ import { useRef, useState, useEffect, forwardRef, useImperativeHandle } from 're
 
 import { useIsMobile } from "../utils/utils";
 
-import Modal from "../components/modal";
-import Pagination from "../components/pagination";
+import Modal , {type modelModal} from "./Modal";
+import Pagination from "./Pagination";
 
 interface modeloItemTabla {
     label: string
@@ -35,11 +35,6 @@ interface modeloTable {
     totalPage?: number
 }
 
-interface modelModal {
-    show: Function
-    hiden: Function
-}
-
 interface modelPagination {
     disabledPagination: Function
     refrescarValores: Function
@@ -68,7 +63,6 @@ export default forwardRef(({ configution = { headersTable: [] }, disabled = fals
     const refPagination = useRef<modelPagination>(null)
 
     const [sortConfig, setSortConfig] = useState<any[]>([]);
-    //const [dataT, setDataT] = useState<any[]>(data);
     const [sizeT, setSizeT] = useState<number>(size);
     const [pageT, setPageT] = useState<number>(page);
     const [totalPageT, setTotalPageT] = useState<number>(totalPage);
@@ -303,7 +297,7 @@ export default forwardRef(({ configution = { headersTable: [] }, disabled = fals
 
     const onchangePagination = (size: number, page: number, filter: string | undefined) => {
         console.log(size, page, filter, 'onchangePagination');
-        onchangeTable(sortConfig, size, page, totalPageT, filter)
+        onchangeTable(sortConfig, size, page, filter)
         refPagination.current?.refrescarValores(size, page, filter)
     }
 
@@ -325,11 +319,7 @@ export default forwardRef(({ configution = { headersTable: [] }, disabled = fals
                 disabled={disabled}
             />
 
-            {
-            //isMobile ? pintarCards(dataT) : pintarTabla(dataT)
-            }
             {isMobile ? pintarCards(data) : pintarTabla(data)}
-
 
             <Modal
                 continueModal={continueModal}

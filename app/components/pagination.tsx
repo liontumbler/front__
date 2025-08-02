@@ -1,6 +1,6 @@
 import { useRef, useState, forwardRef, useImperativeHandle } from 'react';
-import Input, {type modelInput} from "../components/inputNumber";
-import Select from "../components/select";
+import Input, {type modelInput} from "./Input";
+import Select from "./";
 
 interface modeloPagination {
     totalPages: number
@@ -8,19 +8,17 @@ interface modeloPagination {
     disabled: boolean
 }
 
-export default forwardRef(({ totalPages, onchangePagination, disabled} : modeloPagination, ref) => {
+export default forwardRef(({ totalPages, onchangePagination, disabled } : modeloPagination, ref) => {
     const [filter, setFilter] = useState<string>();
     const [page, setPage] = useState<number>(1);
     const [sizeP, setSizeP] = useState<number>(10);
-    //const [totalP, setTotalP] = useState<number>(totalPages);
-
-    //const [disabled, setDisabledPage] = useState<boolean>(false);
 
     const refPaginacion = useRef<modelInput>(null)
     const refSearch = useRef<modelInput>(null)
 
     function handlePage(size: number, page: number, filter: string | undefined) {
-        setSizeP(size)
+        console.log(size, '....');
+        //setSizeP(size)
         setPage(page)
         setFilter(filter)
         onchangePagination(size, page, filter)
@@ -30,14 +28,11 @@ export default forwardRef(({ totalPages, onchangePagination, disabled} : modeloP
         setSizeP(size)
         setPage(page)
         setFilter(filter)
-        //setTotalP(totalP)
     }
 
-    /*const disabledPagination = (block = false) => {
-        setDisabledPage(block)
-    }*/
-
     const handleChageSize = (size: number) => {
+        console.log(size, 'ooo');
+        
         const pg = refPaginacion.current?.value()
         handlePage(size, pg, filter)
     }
@@ -79,6 +74,8 @@ export default forwardRef(({ totalPages, onchangePagination, disabled} : modeloP
     const handleBuscar = () => {
         const pg = refPaginacion.current?.value()
         const filter = refSearch.current?.value()
+        console.log('handleBuscar', sizeP, pg, filter);
+        
         handlePage(sizeP, pg, filter)
     }
 
@@ -100,7 +97,7 @@ export default forwardRef(({ totalPages, onchangePagination, disabled} : modeloP
                         Mostrar:
                     </div>
                     <div className='col-6'>
-                        <Select value={sizeP} onChange={handleChageSize} disabled={disabled}
+                        <Select id="mostrar" valor={sizeP} onChange={handleChageSize} disabled={disabled}
                             options={[
                                 { value: 10, label: '10' },
                                 { value: 20, label: '20' },
@@ -134,8 +131,8 @@ export default forwardRef(({ totalPages, onchangePagination, disabled} : modeloP
                         />
                     </div>
                     <div className='col-3'>
-                        <button className='btn btn-primary w-100' disabled={disabled}>
-                            <i className="bi bi-search" onClick={handleBuscar}></i>
+                        <button className='btn btn-primary w-100' disabled={disabled} onClick={handleBuscar}>
+                            <i className="bi bi-search"></i>
                         </button>
                     </div>
                 </div>

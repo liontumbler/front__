@@ -2,10 +2,6 @@ import { name } from "./capura";
 
 interface modelService {
     id?: number | null
-    page?: number
-    size?: number
-    sort?: Array<any>
-    filter?: string | undefined
     data?: any
     url: string
     method: string
@@ -41,9 +37,7 @@ class service {
             .catch((error) => console.error(error));
     }
 
-    
-
-    protected async service({ page, size, sort, filter, url, method, data }: modelService, header: string | null = null): Promise<any> {
+    protected async service({ url, method, data }: modelService, header: string | null = null): Promise<any> {
         const myHeaders = this.generateHeaders(this.license, header)
         const requestOptions: RequestInit = {
             method: method,
@@ -56,29 +50,22 @@ class service {
             requestOptions['body'] = dataService
         }
 
-        const params = new URLSearchParams();
-        if (page) params.append("page", page.toString());
-        if (size) params.append("size", size.toString());
-        if (sort && sort.length > 0) params.append("sort", JSON.stringify(sort));
-        if (filter) params.append("filter", filter);
-
         const res = await fetch(url, requestOptions)
             .then((response) => response.json())
             .catch((error) => console.error(error));
 
-        console.log('gggggggg', res);
+        console.log('service', res);
         if (res.code == 401) {
             const tokens = await this.refreshToken()
-            console.log('tokens', tokens);
-            // if (tokens && tokens.code == 200) {
-            //     //localStorage.setItem('access_token', res.datos.access_token);
-            //     //localStorage.setItem('refresh_token', res.datos.refresh_token);
-            //     localStorage.setItem('is_logged_in', '1');
-            //     return await this.service({ page, size, sort, filter, url, method, data })
-            // } else {
-            //     localStorage.setItem('is_logged_in', '0');
-            //     //window.location.href = '/';
-            // }
+            console.log('refresh_token', tokens);
+            if (tokens && tokens.code == 200) {
+                localStorage.setItem('access_token', res.datos.access_token);
+                localStorage.setItem('refresh_token', res.datos.refresh_token);
+                return await this.service({ url, method, data })
+            } else {
+                localStorage.clear();
+                window.location.href = '/';
+            }
         } else {
             return res;
         }

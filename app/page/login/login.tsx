@@ -1,23 +1,26 @@
 import logo from "./adminLig.svg";
 
+import "./login.css";
+
 import { useRef, useState } from 'react';
 
 import { useIsMobile, validarCampos } from "../../utils/utils";
 
 import { usuarioService } from "../../services/usuario/usuarioService";
 
-import Input, { type modelInput } from "../../components/inputNumber";
+import Input, { type modelInput } from "../../components/Input";
+import Button from "../../components/button";
 
 export function Login() {
   const service = new usuarioService()
 
   const [disabled, setDisabled] = useState<boolean>(false);
+  const [cargando, setCargando] = useState<boolean>(false);
 
   const isMobile = useIsMobile();
 
   const refCorreo = useRef<modelInput>(null)
   const refPassword = useRef<modelInput>(null)
-
 
   const login = async () => {
     const consultar = {
@@ -32,10 +35,17 @@ export function Login() {
         password: refPassword.current?.value()
       }
 
+      setDisabled(true)
+      setCargando(true)
       let res = await service.loginService(data)
-      console.log(res, 'pipo');
-      if (res != undefined) {
+      setDisabled(false)
+      setCargando(false)
+
+      if (res && res.code == 200) {
         window.location.href = '/table';
+      } else {
+        alert('datos incorrectos')
+        console.error('login', res);
       }
     } else {
       alert(validar)
@@ -86,7 +96,12 @@ export function Login() {
             </div>
             <div className="col-lg-12 mb-1">
               <div className="d-grid gap-2">
-                <button className="btn btn-primary" type="button" onClick={login}>login</button>
+                <Button
+                  cargando={cargando}
+                  disabled={disabled}
+                  onClick={login}
+                  text="Login"
+                />
               </div>
             </div>
           </div>

@@ -10,6 +10,11 @@ interface modeloModal {
     textBtnOpen?: string
 }
 
+interface modelModal {
+    show: Function
+    hiden: Function
+}
+
 export default forwardRef(({ title = '', closeModal, continueModal, component, textBtnClose = 'Cancelar', textBtnOpen = 'Continuar' }: modeloModal, ref) => {
 
     const [modalVisible, setModalVisible] = useState<string>('');
@@ -58,3 +63,5 @@ export default forwardRef(({ title = '', closeModal, continueModal, component, t
     )
 
 })
+
+export {type modelModal}

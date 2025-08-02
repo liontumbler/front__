@@ -95,26 +95,38 @@ class licenciaService extends service{
     }
 
     async getLicenciaService ({id = '', page = 1, size = 10, sort = [], filter = undefined}: modelGetService ) {
-        let dataServices = {
-            url: `http://127.0.0.1:8000/api/licencias/${id}`, 
-            method: 'GET'
-        } as modelService
-
+        let parametros: modelGetService = {} 
         if (page) {
-            dataServices['page'] = page
-        }
-
-        if (size) {
-            dataServices['size'] = size
-        }
-
-        if (sort) {
-            dataServices['sort'] = sort
+            console.log(page, 'page');
+            parametros['page'] = page
         }
 
         if (filter) {
-            dataServices['filter'] = filter
+            console.log(filter, 'filter');
+            parametros['filter'] = filter
         }
+
+        if (size) {
+            console.log(size, 'size');
+            parametros['size'] = size
+        }
+
+        if (sort.length > 0) {
+            console.log(sort, 'sort');
+            const sortString = sort.map((s) => {
+                return `${s.key}:${s.direction}`
+            }).join(',')
+            
+            parametros['sort'] = sortString as any
+        }
+
+        
+
+        const params = new URLSearchParams(parametros as any);
+        let dataServices = {
+            url: `http://127.0.0.1:8000/api/licencias/${id}${(Object.keys(parametros).length > 0) ? '?'+params.toString() : null }`, 
+            method: 'GET'
+        } as modelService
 
         return await this.service(dataServices)
     }

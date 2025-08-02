@@ -27,8 +27,7 @@ const validarCampos = (consultar: any) => {
     for (const key in consultar) {
         let campo = consultar[key]
         let validar = campo.current?.validarCampo()
-        //console.log(validar, campo);
-
+        console.log(validar, campo, 'validarCampos');
         if (validar !== true) {
             valido = validar;
             break;
